@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variaveis</title>
+
+    <style type="text/css">
+        .variaveis{
+            width: 850px;
+            height: 50px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div id="valores">
+        <h1>Valores:</h1>
+        <h3 id="X">X = 10</h3>
+        <h3 id="Y">Y = 100</h3>
+        <h3 id="a">a = 10</h3>
+        <h3 id="b">b = 0</h3>
+    </div>
+
+    <div class="variaveis">
+        variavelX <input type="range" min="-255" max="255" step="1" value="10" id="variavelX">
+        variavelY <input type="range" min="-255" max="255" step="1" value="100" id="variavelY">
+        variavelA <input type="range" min="-255" max="255" step="1" value="10" id="variavelA">
+        variavelB <input type="range" min="-255" max="255" step="1" value="0" id="variavelB">
+
+        <div id="chart1"></div>   
+        <div id="chart2"></div>   
+    </div>
+    
+
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+        var input = document.querySelectorAll("input");
+        var X = document.getElementById('X')
+        var Y = document.getElementById('Y')
+        var a = document.getElementById('a')
+        var b = document.getElementById('b')
+
+        for(var i = 0; i< input.length; i++){
+            input[i].addEventListener("input", function(){
+                var variavelX = Number(document.getElementById('variavelX').value)
+                var variavelY = Number(document.getElementById('variavelY').value)
+                var variavelA = Number(document.getElementById('variavelA').value)
+                var variavelB = Number(document.getElementById('variavelB').value)
+
+                variavelY = variavelA*variavelX + variavelB
+                
+                X.innerHTML = `X = ${variavelX}`
+                Y.innerHTML = `Y = ${variavelY}`
+                a.innerHTML = `a = ${variavelA}`
+                b.innerHTML = `b = ${variavelB}`
+
+
+                google.charts.load('current', {packages: ['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    const container1 = document.querySelector('#chart1')
+                    const container2 = document.querySelector('#chart2')
+                    const data = new google.visualization.arrayToDataTable([
+                        ['Character', 'Valor'],
+                        ['X', Number(variavelX)],
+                        ['Y', Number(variavelY)]
+                    ])
+
+                    const options = {
+                        title: 'Valores da função',
+                        height: 330,
+                        width: 720,
+                    }
+
+                    const chart = new google.visualization.ColumnChart(container1)
+                    chart.draw(data, options)
+
+                    const chart2 = new google.visualization.LineChart(container2)
+                    chart2.draw(data, options)
+                }
+            })
+        }
+ 
+    </script>
+
+
+</body>
+</html>
